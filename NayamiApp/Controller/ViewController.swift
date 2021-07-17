@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     var animationView:AnimationView = AnimationView()
     
     
+    
+    
 //    画面がよばれた時
     override func viewDidLoad() {
         super.viewDidLoad()
