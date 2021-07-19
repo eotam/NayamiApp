@@ -10,12 +10,14 @@ import Firebase
 import FirebaseFirestore
 import SDWebImage
 import Foundation
+import NendAd
 
 
-class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UITextFieldDelegate {
+class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UITextFieldDelegate,NADViewDelegate {
   
     
  
+    @IBOutlet weak var nadView: NADView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -26,6 +28,10 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        nadView.setNendID(1037644, apiKey: "cf325930ebf544f4d9f7fffad388dcc464096a94")
+        nadView.delegate = self
+        nadView.load()
         
         let downLoad = DownLoad()
         downLoad.done = self
@@ -139,6 +145,9 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        NADInterstitial.sharedInstance()?.showAd(from: self)
+        
         
         let hentou3VC = self.storyboard?.instantiateViewController(identifier: "hentou3") as! Hentou3ViewController
         

@@ -8,11 +8,14 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import NendAd
 
-class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate{
+class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,NADInterstitialVideoDelegate{
     
 //    DBの場所を指定
     let db = Firestore.firestore()
+    
+    let interstitialVideo = NADInterstitialVideo(spotID: 1037643, apiKey: "8b323303f36ecfb439be0b1785df3cf6e27f744b")
     
 //    pickerView配列
     private var datasurce = ["仕事","恋愛","人間関係","その他"]
@@ -30,6 +33,9 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        interstitialVideo.delegate = self
+        interstitialVideo.loadAd()
         
         if UserDefaults.standard.object(forKey: "userName") != nil{
             
@@ -181,9 +187,26 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
         textView.text = ""
         }
         
-       
-    
+        if interstitialVideo.isReady{
+            
+            interstitialVideo.showAd(from: self)
+            
+        }
 }
+    
+    
+//    広告の受信
+    func nadInterstitialVideoAdDidReceiveAd(_ nadInterstitialVideoAd: NADInterstitialVideo!) {
+        print("受信完了")
+    }
+//    エラー
+    func nadInterstitialVideoAd(_ nadInterstitialVideoAd: NADInterstitialVideo!, didFailToLoadWithError error: Error!) {
+        print(error.debugDescription)
+    }
+//    表示がされない
+    func nadInterstitialVideoAdDidFailed(toPlay nadInterstitialVideoAd: NADInterstitialVideo!) {
+        print("表示がされない")
+    }
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

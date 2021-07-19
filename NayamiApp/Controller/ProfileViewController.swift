@@ -79,12 +79,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                         self.historySetArray.append(dataSet)
                         
                         
-                        
                     }
                     
                 }
             }
         }
+        
         
         func loadhistory2(){
             

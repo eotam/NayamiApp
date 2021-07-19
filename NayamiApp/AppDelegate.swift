@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import NendAd
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+//        インタースティシャル広告（ロードのみ）
+        
+        NADInterstitial.sharedInstance()?.loadAd(withSpotID: 1037642, apiKey: "f5971b873b1bc26b84de82f6f837a591aa6bcb75")
         
         FirebaseApp.configure()
         
