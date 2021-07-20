@@ -29,6 +29,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         //        カスタムセル
         historyView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
         historyView.separatorStyle = .none
@@ -56,113 +58,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
             
         }
         
-        
 //        履歴ダウンロード
-        func loadhistory1(){
-            
-            db.collection("1").addSnapshotListener { snapshot, error in
-                self.historySetArray = []
-                
-                if error != nil{
-                    return
-                }
-                
-                if let snapShotDoc = snapshot?.documents{
-                    
-                    for doc in snapShotDoc{
-                        
-                        let data = doc.data()
-                        
-                        let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
-                        
-                        
-                        self.historySetArray.append(dataSet)
-                        
-                        
-                    }
-                    
-                }
-            }
-        }
-        
-        
-        func loadhistory2(){
-            
-            db.collection("2").addSnapshotListener { snapshot, error in
-                self.historySetArray = []
-                
-                if error != nil{
-                    return
-                }
-                
-                if let snapShotDoc = snapshot?.documents{
-                    
-                    for doc in snapShotDoc{
-                        
-                        let data = doc.data()
-                        
-                        let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
-                        
-                        
-                        self.historySetArray.append(dataSet)
-                        
-                    }
-                    
-                }
-            }
-        }
-        
-        func loadhistory3(){
-            
-            db.collection("3").addSnapshotListener { snapshot, error in
-                self.historySetArray = []
-                
-                if error != nil{
-                    return
-                }
-                
-                if let snapShotDoc = snapshot?.documents{
-                    
-                    for doc in snapShotDoc{
-                        
-                        let data = doc.data()
-                        
-                        let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
-                        
-                        
-                        self.historySetArray.append(dataSet)
-                        
-                    }
-                    
-                }
-            }
-        }
-        
-        func loadhistory4(){
-            
-            db.collection("4").addSnapshotListener { snapshot, error in
-                self.historySetArray = []
-                
-                if error != nil{
-                    return
-                }
-                
-                if let snapShotDoc = snapshot?.documents{
-                    
-                    for doc in snapShotDoc{
-                        
-                        let data = doc.data()
-                        
-                        let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
-                        
-                        
-                        self.historySetArray.append(dataSet)
-                        
-                    }
-                    
-                }
-            }
-        }
+        loadhistory1()
+        loadhistory2()
+        loadhistory3()
+        loadhistory4()
         
         
 //       履歴作成
@@ -181,6 +81,115 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
 
         
     }
+    
+    
+//        履歴ダウンロード
+    func loadhistory1(){
+        
+        db.collection("1").addSnapshotListener { snapshot, error in
+            self.historySetArray = []
+            
+            if error != nil{
+                return
+            }
+            
+            if let snapShotDoc = snapshot?.documents{
+                
+                for doc in snapShotDoc{
+                    
+                    let data = doc.data()
+                    
+                    let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
+                    
+                    
+                    self.historySetArray.append(dataSet)
+                    
+                    
+                }
+                
+            }
+        }
+    }
+    
+    
+    func loadhistory2(){
+        
+        db.collection("2").addSnapshotListener { snapshot, error in
+            self.historySetArray = []
+            
+            if error != nil{
+                return
+            }
+            
+            if let snapShotDoc = snapshot?.documents{
+                
+                for doc in snapShotDoc{
+                    
+                    let data = doc.data()
+                    
+                    let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
+                    
+                    
+                    self.historySetArray.append(dataSet)
+                    
+                }
+                
+            }
+        }
+    }
+    
+    func loadhistory3(){
+        
+        db.collection("3").addSnapshotListener { snapshot, error in
+            self.historySetArray = []
+            
+            if error != nil{
+                return
+            }
+            
+            if let snapShotDoc = snapshot?.documents{
+                
+                for doc in snapShotDoc{
+                    
+                    let data = doc.data()
+                    
+                    let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
+                    
+                    
+                    self.historySetArray.append(dataSet)
+                    
+                }
+                
+            }
+        }
+    }
+    
+    func loadhistory4(){
+        
+        db.collection("4").addSnapshotListener { snapshot, error in
+            self.historySetArray = []
+            
+            if error != nil{
+                return
+            }
+            
+            if let snapShotDoc = snapshot?.documents{
+                
+                for doc in snapShotDoc{
+                    
+                    let data = doc.data()
+                    
+                    let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
+                    
+                    
+                    self.historySetArray.append(dataSet)
+                    
+                }
+                
+            }
+        }
+    }
+    
     
     @IBAction func kousin(_ sender: Any) {
         
