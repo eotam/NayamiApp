@@ -9,8 +9,9 @@ import UIKit
 //ライブラリーをインポート
 import Lottie
 import FirebaseAuth
+import NendAd
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,NADViewDelegate {
     
 //  宣言ゾーン
     @IBOutlet weak var titleLabel: UIImageView!
@@ -18,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var botton1: UIButton!
     @IBOutlet weak var botton2: UIButton!
     @IBOutlet weak var botton3: UIButton!
+    @IBOutlet weak var nadView: NADView!
     var animationView:AnimationView = AnimationView()
     
     
@@ -39,9 +41,10 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveEaseIn], animations: {self.titleLabel2.alpha = 1.0}, completion: nil)
         titleLabel2.layer.zPosition = 1
         
-        
-        
-        
+//        バナー広告
+        nadView.setNendID(1037670, apiKey: "3969554bde3db86a175dd285656b6944b75e934d")
+        nadView.delegate = self
+        nadView.load()
         
     }
     

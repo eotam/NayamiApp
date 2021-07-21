@@ -80,14 +80,19 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
 //    投稿を送信
     @IBAction func sendNayamiBotton(_ sender: Any) {
         
+        //        広告表示
         
-
+        if interstitialVideo.isReady{
+            
+            interstitialVideo.showAd(from: self)
+            
+        }
         
-//        タイトル・本文未入力
+        //        タイトル・本文未入力
         if titleField.text?.isEmpty == true && textView.text.isEmpty == true {
             
-//            alert表示
-                    let alert = UIAlertController(title: "タイトル・本文を入力してください", message: "", preferredStyle: .alert)
+            //            alert表示
+            let alert = UIAlertController(title: "タイトル・本文を入力してください", message: "", preferredStyle: .alert)
                     let okAction: UIAlertAction =
                         UIAlertAction(title: "閉じる",style: UIAlertAction.Style.default,
                             handler:{
@@ -187,11 +192,7 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
         textView.text = ""
         }
         
-        if interstitialVideo.isReady{
-            
-            interstitialVideo.showAd(from: self)
-            
-        }
+        
 }
     
     

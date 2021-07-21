@@ -9,14 +9,16 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import SDWebImage
+import NendAd
 
 
 
-class Hentou4ViewController: UIViewController {
+class Hentou4ViewController: UIViewController,NADViewDelegate {
     
     @IBOutlet weak var commentField: UITextView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var nadView: NADView!
     
     
     var tag = Int()
@@ -34,6 +36,10 @@ class Hentou4ViewController: UIViewController {
         commentField.isEditable = false
         
         image.layer.cornerRadius = image.frame.width/2
+        
+        nadView.setNendID(1037670, apiKey: "3969554bde3db86a175dd285656b6944b75e934d")
+        nadView.delegate = self
+        nadView.load()
 
         // Do any additional setup after loading the view.
     }

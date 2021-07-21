@@ -64,23 +64,26 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         loadhistory3()
         loadhistory4()
         
-        
+        history()
+
+    }
+    
+    func history(){
 //       履歴作成
-        if historySetArray.contains(where: {$0.users == Auth.auth().currentUser!.uid}){
+    if historySetArray.contains(where: {$0.users == Auth.auth().currentUser!.uid}){
 
-            let indexNumber = self.historySetArray.firstIndex(where: {$0.users == Auth.auth().currentUser!.uid})
+        let indexNumber = self.historySetArray.firstIndex(where: {$0.users == Auth.auth().currentUser!.uid})
 
-            var historyArray = [DataSet]()
-            historyArray.append(self.historySetArray[indexNumber!])
-            self.historySetArray = historyArray
-            
-            historyView.reloadData()
+        var historyArray = [DataSet]()
+        historyArray.append(self.historySetArray[indexNumber!])
+        self.historySetArray = historyArray
+        
+        historyView.reloadData()
 
-        }
-
-
+    }
         
     }
+
     
     
 //        履歴ダウンロード
@@ -103,8 +106,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
-                    
-                    
+                    print("仕事")
+                   
                 }
                 
             }
@@ -131,6 +134,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
+                    print("恋愛")
                     
                 }
                 
@@ -157,6 +161,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
+                    print("ninngenn")
                     
                 }
                 
@@ -183,6 +188,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
+                    print("sonota")
                     
                 }
                 

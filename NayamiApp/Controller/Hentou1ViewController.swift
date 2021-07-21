@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import NendAd
 
-class Hentou1ViewController: UIViewController {
-
+class Hentou1ViewController: UIViewController,NADViewDelegate {
+    @IBOutlet weak var nadView: NADView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        nadView.setNendID(1037670, apiKey: "3969554bde3db86a175dd285656b6944b75e934d")
+        nadView.delegate = self
+        nadView.load()
         
     }
     
