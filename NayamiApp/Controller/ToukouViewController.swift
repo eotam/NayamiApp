@@ -142,7 +142,7 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
 //        データ送信
             if selected == "仕事"{
                 
-                db.collection("1").document().setData(
+                db.collection("1").document(Auth.auth().currentUser!.uid).collection("contents").document().setData(
                     
                     ["title":titleField.text as Any,"textView":textView.text as Any,"category":selected,"postDate":Date().timeIntervalSince1970,"users":Auth.auth().currentUser!.uid,"imageString":imageString,"userName":UserDefaults.standard.string(forKey: "userName") as Any]
                     
@@ -150,7 +150,7 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
                 
             }else if selected == "恋愛"{
                 
-                db.collection("2").document().setData(
+                db.collection("2").document(Auth.auth().currentUser!.uid).collection("contents").document().setData(
                     
                     ["title":titleField.text as Any,"textView":textView.text as Any,"category":selected,"postDate":Date().timeIntervalSince1970,"users":Auth.auth().currentUser!.uid,"imageString":imageString,"userName":UserDefaults.standard.string(forKey: "userName") as Any]
                     
@@ -158,7 +158,7 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
                 
             }else if selected == "人間関係"{
                 
-                db.collection("3").document().setData(
+                db.collection("3").document(Auth.auth().currentUser!.uid).collection("contents").document().setData(
                     
                     ["title":titleField.text as Any,"textView":textView.text as Any,"category":selected,"postDate":Date().timeIntervalSince1970,"users":Auth.auth().currentUser!.uid,"imageString":imageString,"userName":UserDefaults.standard.string(forKey: "userName") as Any]
                     
@@ -166,7 +166,7 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
                 
             }else if selected == "その他"{
                 
-                db.collection("4").document().setData(
+                db.collection("4").document(Auth.auth().currentUser!.uid).collection("contents").document().setData(
                     
                     ["title":titleField.text as Any,"textView":textView.text as Any,"category":selected,"postDate":Date().timeIntervalSince1970,"users":Auth.auth().currentUser!.uid,"imageString":imageString,"userName":UserDefaults.standard.string(forKey: "userName") as Any]
                     

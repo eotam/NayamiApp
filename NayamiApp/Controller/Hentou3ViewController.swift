@@ -51,7 +51,7 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
         commentTable.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
         commentTable.separatorStyle = .none
         
-        loadComment()
+//        loadComment()
         
         
 }
@@ -59,9 +59,9 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
     
 //    コメント投稿
     @IBAction func sendBotton(_ sender: Any) {
-        
+
         if commentField.text?.isEmpty == true {
-            
+
             //            alert表示
             let alert = UIAlertController(title: "コメントを入力してください", message: "", preferredStyle: .alert)
             let okAction: UIAlertAction =
@@ -69,16 +69,16 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
                               handler:{
                                 (action: UIAlertAction!) -> Void in
                                 print("閉じる")
-                                
+
                               })
-            
+
             alert.addAction(okAction)
             present(alert, animated: true, completion: nil)
-            
+
         }else{
-        
-            db.collection(Util.category[tag - 1]).document(idString).collection("Comment").document().setData(["Comment": commentField.text as Any,"postDate":Date().timeIntervalSince1970,"Users":Auth.auth().currentUser!.uid,"userName":UserDefaults.standard.string(forKey: "userName") as Any,"userImage":  UserDefaults.standard.object(forKey: "userImage") as Any])
-        
+
+            db.collection(Util.category[tag - 1]).document(idString).collection("contents").document().collection("Comment").document().setData(["Comment": commentField.text as Any,"postDate":Date().timeIntervalSince1970,"Users":Auth.auth().currentUser!.uid,"userName":UserDefaults.standard.string(forKey: "userName") as Any,"userImage":  UserDefaults.standard.object(forKey: "userImage") as Any])
+
             //       alert表示
                     let alert = UIAlertController(title: "コメントが投稿されました", message: "", preferredStyle: .alert)
                     let okAction: UIAlertAction =
@@ -95,39 +95,39 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
 //            コメントフィールドを空にする
             commentField.text = ""
             loadComment()
-            
+
         }
     }
     
 
 //    コメント受信
     func loadComment(){
-        
-        db.collection(Util.category[tag - 1]).document(idString).collection("Comment").order(by: "postDate").addSnapshotListener { snapShot, error in
-            
+
+        db.collection(Util.category[tag - 1]).document(idString).collection("contents").document().collection("Comment").order(by: "postDate").addSnapshotListener { snapShot, error in
+
             self.commentSet = []
-            
+
             if error != nil{
                 return
             }
-            
+
             if let snapShotDoc = snapShot?.documents{
-                
+
                 for doc in snapShotDoc{
-                    
+
                     let data = doc.data()
-                    
+
                     let commentSet = CommentSet(commentField: data["Comment"] as! String, imageString: data["userImage"] as! String, postDate: data["postDate"] as! Double, userName: data["userName"] as! String)
-                    
+
                     self.commentSet.append(commentSet)
-                    
+
                 }
             }
-            
+
             self.commentTable.reloadData()
         }
-        
-        
+
+
     }
     
     

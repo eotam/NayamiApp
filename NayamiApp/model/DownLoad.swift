@@ -23,8 +23,9 @@ class DownLoad{
     //    ロード
     func load(tag:Int){
         
+//        db.collection("").addSnapshotListener
         
-        db.collection(Util.category[tag - 1]).addSnapshotListener { snapshot, error in
+        db.collection((Util.category[tag - 1])).addSnapshotListener { [self] snapshot, error in
             self.dataSetArray = []
             
             if error != nil{

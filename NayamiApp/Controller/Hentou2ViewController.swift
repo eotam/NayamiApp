@@ -70,7 +70,7 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     
 
     
-//    サーチバーへ入力された文字からtableViewのCellを検索↓ここの処理をIF文に書き換える？
+//    サーチバー
     func search(_ text: String) {
         
             

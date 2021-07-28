@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import SDWebImage
+import NendAd
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate {
     
@@ -29,7 +30,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        historyView.delegate = self
+        historyView.dataSource = self
         
         //        カスタムセル
         historyView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
@@ -59,38 +61,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         }
         
 //        履歴ダウンロード
+        self.historySetArray = []
         loadhistory1()
         loadhistory2()
         loadhistory3()
         loadhistory4()
-        
-        history()
-
-    }
-    
-    func history(){
-//       履歴作成
-    if historySetArray.contains(where: {$0.users == Auth.auth().currentUser!.uid}){
-
-        let indexNumber = self.historySetArray.firstIndex(where: {$0.users == Auth.auth().currentUser!.uid})
-
-        var historyArray = [DataSet]()
-        historyArray.append(self.historySetArray[indexNumber!])
-        self.historySetArray = historyArray
-        
-        historyView.reloadData()
 
     }
         
-    }
-
-    
     
 //        履歴ダウンロード
     func loadhistory1(){
         
-        db.collection("1").addSnapshotListener { snapshot, error in
-            self.historySetArray = []
+        db.collection("1").document(Auth.auth().currentUser!.uid).collection("contents").addSnapshotListener { [self] snapshot, error in
             
             if error != nil{
                 return
@@ -106,8 +89,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
-                    print("仕事")
-                   
+                    
+                    print(data["title"] as! String)
+                    print(historySetArray.count)
+
+                    self.historyView.reloadData()
                 }
                 
             }
@@ -117,8 +103,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     func loadhistory2(){
         
-        db.collection("2").addSnapshotListener { snapshot, error in
-            self.historySetArray = []
+        db.collection("2").document(Auth.auth().currentUser!.uid).collection("contents").addSnapshotListener { snapshot, error in
             
             if error != nil{
                 return
@@ -134,8 +119,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
-                    print("恋愛")
-                    
+                    self.historyView.reloadData()
+
                 }
                 
             }
@@ -144,8 +129,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     func loadhistory3(){
         
-        db.collection("3").addSnapshotListener { snapshot, error in
-            self.historySetArray = []
+        db.collection("3").document(Auth.auth().currentUser!.uid).collection("contents").addSnapshotListener { snapshot, error in
             
             if error != nil{
                 return
@@ -161,8 +145,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
-                    print("ninngenn")
-                    
+                    self.historyView.reloadData()
                 }
                 
             }
@@ -171,8 +154,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     func loadhistory4(){
         
-        db.collection("4").addSnapshotListener { snapshot, error in
-            self.historySetArray = []
+        db.collection("4").document(Auth.auth().currentUser!.uid).collection("contents").addSnapshotListener { snapshot, error in
             
             if error != nil{
                 return
@@ -188,8 +170,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     
                     self.historySetArray.append(dataSet)
-                    print("sonota")
-                    
+                    self.historyView.reloadData()
+
                 }
                 
             }
@@ -303,6 +285,52 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
             return cell
 
         }
+    
+    private func tableview(_ tableview: UITableView, heightForRowAt indexpath: IndexPath) -> CGFloat{
+        return 160
+    }
+    
+    
+//    自分の投稿を削除
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//
+//        db.collection(Util.category[tag - 1]).document(Auth.auth().currentUser!.uid).collection("contents").document().delete() { err in
+//            if let err = err {
+//                print("Error removing document: \(err)")
+//            } else {
+//                print("Document successfully removed!")
+//            }
+//        }
+        
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+                    historySetArray.remove(at: indexPath.row)
+                    historyView.deleteRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
+            
+            
+            
+                }
+            }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        NADInterstitial.sharedInstance()?.showAd(from: self)
+        
+        
+        let hentou3VC = self.storyboard?.instantiateViewController(identifier: "hentou3") as! Hentou3ViewController
+        
+//        データを渡す
+        hentou3VC.titleString = historySetArray[indexPath.row].title
+        hentou3VC.honbunString = historySetArray[indexPath.row].textView
+        hentou3VC.userImage = historySetArray[indexPath.row].imageString
+        hentou3VC.userName = historySetArray[indexPath.row].userName
+        hentou3VC.idString = historySetArray[indexPath.row].docID
+//        下タグの受け渡し？
+        hentou3VC.tag = tag
+
+//        画面遷移
+        navigationController?.pushViewController(hentou3VC, animated: true)
+    }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
