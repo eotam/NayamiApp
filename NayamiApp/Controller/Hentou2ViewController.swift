@@ -28,6 +28,8 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.delegate = self
+        tableView.dataSource = self
         
         nadView.setNendID(1037644, apiKey: "cf325930ebf544f4d9f7fffad388dcc464096a94")
         nadView.delegate = self
@@ -37,9 +39,6 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
         downLoad.done = self
         downLoad.load(tag:tag)
         
-        
-        tableView.delegate = self
-        tableView.dataSource = self
         
 //        カスタムセル
         tableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
@@ -51,7 +50,8 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     }
     
     func check(dataSetArray:[DataSet]) {
-        
+        self.dataSetArray = []
+//        print(dataSetArray.debugDescription)
         self.dataSetArray = dataSetArray
         self.tableView.reloadData()
         
@@ -123,12 +123,17 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
 
 //    カスタムセル設定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("numberOfRowsInSection")
+        print(dataSetArray.count)
         return dataSetArray.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! CommentCell
+        
+        print("cellForRowAt")
+        print(self.dataSetArray[indexPath.row].textView)
 
         cell.commentLabel.text = self.dataSetArray[indexPath.row].textView
         cell.nameLable.text = self.dataSetArray[indexPath.row].title
@@ -157,7 +162,7 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
         hentou3VC.userImage = dataSetArray[indexPath.row].imageString
         hentou3VC.userName = dataSetArray[indexPath.row].userName
         hentou3VC.idString = dataSetArray[indexPath.row].docID
-//        下タグの受け渡し？
+//        タグの受け渡し
         hentou3VC.tag = tag
 
 //        画面遷移

@@ -51,7 +51,7 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
         commentTable.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
         commentTable.separatorStyle = .none
         
-//        loadComment()
+        loadComment()
         
         
 }
@@ -77,7 +77,7 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
 
         }else{
 
-            db.collection(Util.category[tag - 1]).document(idString).collection("contents").document().collection("Comment").document().setData(["Comment": commentField.text as Any,"postDate":Date().timeIntervalSince1970,"Users":Auth.auth().currentUser!.uid,"userName":UserDefaults.standard.string(forKey: "userName") as Any,"userImage":  UserDefaults.standard.object(forKey: "userImage") as Any])
+            db.collection(Util.category[tag - 1]).document(idString).collection("Comment").document().setData(["Comment": commentField.text as Any,"postDate":Date().timeIntervalSince1970,"Users":Auth.auth().currentUser!.uid,"userName":UserDefaults.standard.string(forKey: "userName") as Any,"userImage":  UserDefaults.standard.object(forKey: "userImage") as Any])
 
             //       alert表示
                     let alert = UIAlertController(title: "コメントが投稿されました", message: "", preferredStyle: .alert)
@@ -103,7 +103,8 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
 //    コメント受信
     func loadComment(){
 
-        db.collection(Util.category[tag - 1]).document(idString).collection("contents").document().collection("Comment").order(by: "postDate").addSnapshotListener { snapShot, error in
+        print("987")
+        db.collection(Util.category[tag - 1]).document(idString).collection("Comment").order(by: "postDate").addSnapshotListener { snapShot, error in
 
             self.commentSet = []
 
@@ -120,7 +121,8 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
                     let commentSet = CommentSet(commentField: data["Comment"] as! String, imageString: data["userImage"] as! String, postDate: data["postDate"] as! Double, userName: data["userName"] as! String)
 
                     self.commentSet.append(commentSet)
-
+                    print("123")
+                    print(data["Comment"] as! String)
                 }
             }
 
