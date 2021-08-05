@@ -19,7 +19,6 @@ class Hentou1ViewController: UIViewController,NADViewDelegate {
         nadView.load()
         
     }
-    
 //    画面遷移
     @IBAction func tap(_ sender: UIButton) {
         let hentou2VC = storyboard?.instantiateViewController(identifier: "hentou2") as!Hentou2ViewController

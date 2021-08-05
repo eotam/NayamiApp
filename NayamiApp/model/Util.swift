@@ -10,5 +10,4 @@ import Foundation
 class Util {
     
     static var category = ["1","2","3","4",]
-    
 }

@@ -9,7 +9,7 @@ import Foundation
 import Photos
 
 class CheckPermission {
-    
+
     func showCheckPermission(){
         PHPhotoLibrary.requestAuthorization { (status) in
             switch(status){

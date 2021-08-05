@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import NendAd
+import IQKeyboardManagerSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
+//        IQKeyboardManager
+        IQKeyboardManager.shared.enable = true
+        
+//        ログアウト処理
 //        let firebaseAuth = Auth.auth()
 //        do{
 //            try firebaseAuth.signOut()

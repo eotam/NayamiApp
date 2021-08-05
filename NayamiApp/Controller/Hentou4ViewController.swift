@@ -40,7 +40,6 @@ class Hentou4ViewController: UIViewController,NADViewDelegate {
         nadView.setNendID(1037670, apiKey: "3969554bde3db86a175dd285656b6944b75e934d")
         nadView.delegate = self
         nadView.load()
-
         // Do any additional setup after loading the view.
     }
     

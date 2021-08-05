@@ -36,7 +36,6 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         commentTable.delegate = self
         commentTable.dataSource = self
         

@@ -180,7 +180,7 @@ class ToukouViewController: UIViewController,UIPickerViewDataSource,UIPickerView
             UIAlertAction(title: "閉じる",style: UIAlertAction.Style.default,
                 handler:{
                     (action: UIAlertAction!) -> Void in
-                    print("閉じる")
+                    
 
     })
 

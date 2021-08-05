@@ -53,9 +53,6 @@ class UpLoadImage{
                 self.sendProfileOKDelegate?.sendProfileOKDelegate(url: url!.absoluteString)
                 
             }
-            
         }
-        
     }
-    
 }

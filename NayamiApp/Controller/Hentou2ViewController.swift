@@ -24,7 +24,6 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     var tag = Int()
     var dataSetArray = [DataSet]()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

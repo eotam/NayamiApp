@@ -16,9 +16,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     
     
-    @IBOutlet weak var pofileImage: UIImageView!
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var userName: UITextField!
-    @IBOutlet weak var historyView: UITableView!
+    @IBOutlet weak var historyTableView: UITableView!
     
     var upLoadImage = UpLoadImage()
     var urlString = String()
@@ -28,20 +28,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     var historySetArray = [DataSet]()
     
     let idString = String()
+    let user = Auth.auth().currentUser
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        historyView.delegate = self
-        historyView.dataSource = self
+        
+        
+        historyTableView.delegate = self
+        historyTableView.dataSource = self
         
         //        カスタムセル
-        historyView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
-        historyView.separatorStyle = .none
+        historyTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "commentCell")
+        historyTableView.separatorStyle = .none
         
         let checkModel = CheckPermission()
         checkModel.showCheckPermission()
-        pofileImage.layer.cornerRadius = pofileImage.frame.width/2
+        profileImage.layer.cornerRadius = profileImage.frame.width/2
 
         // Do any additional setup after loading the view.
         
@@ -51,7 +54,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         
         let imageString = UserDefaults.standard.object(forKey: "userImage") as! String
 
-        pofileImage.sd_setImage(with: URL(string: imageString), completed: nil)
+        profileImage.sd_setImage(with: URL(string: imageString), completed: nil)
         
         }
         
@@ -62,19 +65,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
             
         }
         
-//        履歴ダウンロード
-        self.historySetArray = []
-        loadhistory1()
-        loadhistory2()
-        loadhistory3()
-        loadhistory4()
-    
-        
-
-        
-
+        Auth.auth().signInAnonymously { [self] (result, error) in
+            if(result?.user) != nil{
+                
+                //        履歴ダウンロード
+                self.historySetArray = []
+                loadhistory1()
+                loadhistory2()
+                loadhistory3()
+                loadhistory4()
+            }
+        }
     }
-        
+    
     
 //        履歴ダウンロード
     func loadhistory1(){
@@ -96,7 +99,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     if data["users"] as! String == Auth.auth().currentUser!.uid{
                         
                         self.historySetArray.append(dataSet)
-                        self.historyView.reloadData()
+                        self.historyTableView.reloadData()
                         
 //                        タグをキャスト
                         let category = Int(data["category"] as! String)
@@ -129,7 +132,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     if data["users"] as! String == Auth.auth().currentUser!.uid{
                         
                         self.historySetArray.append(dataSet)
-                        self.historyView.reloadData()
+                        self.historyTableView.reloadData()
                         
                         let category = Int(data["category"] as! String)
                         tag = category!
@@ -161,7 +164,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     if data["users"] as! String == Auth.auth().currentUser!.uid{
                         
                         self.historySetArray.append(dataSet)
-                        self.historyView.reloadData()
+                        self.historyTableView.reloadData()
                         
                         let category = Int(data["category"] as! String)
                         tag = category!
@@ -191,7 +194,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                     
                     if data["users"] as! String == Auth.auth().currentUser!.uid{
                         self.historySetArray.append(dataSet)
-                        self.historyView.reloadData()
+                        self.historyTableView.reloadData()
                         
                         let category = Int(data["category"] as! String)
                         tag = category!
@@ -205,7 +208,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     @IBAction func kousin(_ sender: Any) {
         
-        let image = pofileImage.image
+        let image = profileImage.image
 //        匿名登録
         Auth.auth().signInAnonymously { (result, error) in
             if(result?.user) != nil{
@@ -238,6 +241,35 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         
     }
     
+//    ユーザー削除
+    @IBAction func userDelete(_ sender: Any) {
+        
+        let alertController = UIAlertController(title: "アカウントを削除しますか？", message: "この操作は取り消せません・削除前に投稿を削除してください", preferredStyle: .actionSheet)
+        
+        let action1 = UIAlertAction(title: "削除する", style: .default) {
+            (action: UIAlertAction!) -> Void in
+            self.user?.delete { error in
+                if error != nil {
+                // An error happened.
+              } else {
+                // Account deleted.
+              }
+            }
+            self.userName.text = "匿名さん"
+            self.profileImage.image = UIImage(named: "icon")
+        }
+        
+        let action2 = UIAlertAction(title: "キャンセル", style: .cancel)
+        
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        self.present(alertController, animated: true, completion: nil)
+        
+        
+        
+    }
+    
+    
     @IBAction func tapImageView(_ sender: Any) {
 //        アラートを出す
         showAlert()
@@ -264,7 +296,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         if info[.originalImage] as? UIImage != nil{
             
             let selectedImage = info[.originalImage] as! UIImage
-            pofileImage.image = selectedImage
+            profileImage.image = selectedImage
             picker.dismiss(animated: true, completion: nil)
             
             
@@ -300,7 +332,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-            let cell = historyView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! CommentCell
+            let cell = historyTableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! CommentCell
 
             cell.commentLabel.text = self.historySetArray[indexPath.row].textView
             cell.nameLable.text = self.historySetArray[indexPath.row].title
@@ -319,48 +351,21 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
 //    自分の投稿を削除
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
-
-        if editingStyle == UITableViewCell.EditingStyle.delete {
-            historySetArray.remove(at: indexPath.row)
-            historyView.deleteRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
-
-            if historySetArray[indexPath.row].category == "1"{
-                db.collection("1").document(historySetArray[indexPath.row].docID).delete() { err in
-                    if let err = err {
-                        print("Error removing document: \(err)")
-                    } else {
-                        print("Document successfully removed!")
-                    }
-                }
-            }else if historySetArray[indexPath.row].category == "2"{
-                db.collection("2").document(historySetArray[indexPath.row].docID).delete() { err in
-                    if let err = err {
-                        print("Error removing document: \(err)")
-                    } else {
-                        print("Document successfully removed!")
-                    }
-                }
-            }else if historySetArray[indexPath.row].category == "3"{
-                db.collection("3").document(historySetArray[indexPath.row].docID).delete() { err in
-                    if let err = err {
-                        print("Error removing document: \(err)")
-                    } else {
-                        print("Document successfully removed!")
-                    }
-                }
-            }else if historySetArray[indexPath.row].category == "4"{
-                db.collection("4").document(historySetArray[indexPath.row].docID).delete() { err in
-                    if let err = err {
-                        print("Error removing document: \(err)")
-                    } else {
-                        print("Document successfully removed!")
-                    }
-                }
-
-            }
-        }
         
+        
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+        
+                db.collection(historySetArray[indexPath.row].category).document(historySetArray[indexPath.row].docID).delete() { err in
+                    if let err = err {
+                        print("Error removing document: \(err)")
+                    } else {
+                        print("Document successfully removed!")
+                    }
+                }
+            
+        }
+        historySetArray.remove(at: indexPath.row)
+        historyTableView.deleteRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
     }
                 
                 func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

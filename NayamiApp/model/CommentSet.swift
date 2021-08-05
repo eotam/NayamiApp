@@ -8,7 +8,6 @@
 import Foundation
 
 struct CommentSet {
-    
     let commentField:String
     let imageString:String
     let postDate:Double
