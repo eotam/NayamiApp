@@ -102,7 +102,6 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
 //    コメント受信
     func loadComment(){
 
-        print("987")
         db.collection(Util.category[tag - 1]).document(idString).collection("Comment").order(by: "postDate").addSnapshotListener { snapShot, error in
 
             self.commentSet = []
@@ -117,11 +116,11 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
 
                     let data = doc.data()
 
-                    let commentSet = CommentSet(commentField: data["Comment"] as! String, imageString: data["userImage"] as! String, postDate: data["postDate"] as! Double, userName: data["userName"] as! String)
+                    let commentSet = CommentSet(commentField: data["Comment"] as! String, imageString: data["userImage"] as! String, postDate: data["postDate"] as! Double, userName: data["userName"] as! String, users: data["Users"] as! String)
 
+                    if UserDefaults.standard.string(forKey: "blockUser") != (data["Users"] as! String){
                     self.commentSet.append(commentSet)
-                    print("123")
-                    print(data["Comment"] as! String)
+                    }
                 }
             }
 
@@ -174,6 +173,28 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
         navigationController?.pushViewController(hentou4VC, animated: true)
     
     }
+    
+    //    ユーザーブロック
+        func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+            
+            let blockAction = UIContextualAction(style: .normal  , title: "ブロック") {
+                        (ctxAction, view, completionHandler) in
+                
+                UserDefaults.standard.setValue(self.commentSet[indexPath.row].users, forKey: "blockUser")
+                self.commentSet.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+
+                         print("blockを実行")
+                        completionHandler(true)
+                    }
+            
+            blockAction.backgroundColor = UIColor.red
+            
+            let swipeAction = UISwipeActionsConfiguration(actions:[blockAction])
+                    swipeAction.performsFirstActionWithFullSwipe = false
+            
+            return swipeAction
+        }
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

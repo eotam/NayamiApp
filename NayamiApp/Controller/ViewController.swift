@@ -63,13 +63,13 @@ class ViewController: UIViewController,NADViewDelegate {
                 self.view.addSubview(botton2)
                 self.view.addSubview(botton3)
         
-//        ユーザー登録していなければprofileVCへ画面遷移
+//        kiyakuVCへ画面遷移
         
         if Auth.auth().currentUser?.uid != nil{
             
         }else{
             
-            performSegue(withIdentifier: "profileVC", sender: nil)
+            performSegue(withIdentifier: "kiyakuVC", sender: nil)
             
             let alert = UIAlertController(title: "個人を特定するような投稿・誹謗中傷するような投稿はお控えください", message: "", preferredStyle: .alert)
             let okAction: UIAlertAction =

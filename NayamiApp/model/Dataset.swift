@@ -8,7 +8,6 @@
 import Foundation
 
 struct DataSet {
-    
     let title:String
     let textView:String
     let category:String
@@ -17,4 +16,5 @@ struct DataSet {
     let userName:String
     let docID:String
     let users:String
+    
 }

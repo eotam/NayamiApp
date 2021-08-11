@@ -12,4 +12,5 @@ struct CommentSet {
     let imageString:String
     let postDate:Double
     let userName:String
+    let users:String
 }

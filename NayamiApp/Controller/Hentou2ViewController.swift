@@ -167,7 +167,32 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
 //        画面遷移
         navigationController?.pushViewController(hentou3VC, animated: true)
     }
+    
+//    ユーザーブロック
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let blockAction = UIContextualAction(style: .normal  , title: "ブロック") {
+                    (ctxAction, view, completionHandler) in
+            
+            UserDefaults.standard.setValue(self.dataSetArray[indexPath.row].users, forKey: "blockUser")
+            self.dataSetArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
 
+                     print("blockを実行")
+                    completionHandler(true)
+                }
+        
+        blockAction.backgroundColor = UIColor.red
+        
+        let swipeAction = UISwipeActionsConfiguration(actions:[blockAction])
+                swipeAction.performsFirstActionWithFullSwipe = false
+        
+        return swipeAction
+    }
+   
+
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }

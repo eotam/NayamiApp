@@ -39,8 +39,9 @@ class DownLoad{
                     let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
                     
                    
+                    if UserDefaults.standard.string(forKey: "blockUser") != (data["users"] as! String){
                     self.dataSetArray.append(dataSet)
-                   
+                    }
                 }
                
                 self.done?.check(dataSetArray:self.dataSetArray)
