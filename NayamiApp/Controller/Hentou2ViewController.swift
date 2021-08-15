@@ -23,6 +23,8 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     
     var tag = Int()
     var dataSetArray = [DataSet]()
+    var blockDic = ["ブロックリスト"]
+    var userDefaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,18 +124,13 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
 
 //    カスタムセル設定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection")
-        print(dataSetArray.count)
         return dataSetArray.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! CommentCell
-        
-        print("cellForRowAt")
-        print(self.dataSetArray[indexPath.row].textView)
-
+     
         cell.commentLabel.text = self.dataSetArray[indexPath.row].textView
         cell.nameLable.text = self.dataSetArray[indexPath.row].title
         cell.userImageView.sd_setImage(with: URL(string: self.dataSetArray[indexPath.row].imageString), completed: nil)
@@ -172,24 +169,32 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let blockAction = UIContextualAction(style: .normal  , title: "ブロック") {
-                    (ctxAction, view, completionHandler) in
+            (ctxAction, view, completionHandler) in
+
             
-            UserDefaults.standard.setValue(self.dataSetArray[indexPath.row].users, forKey: "blockUser")
+            self.blockDic.append(self.dataSetArray[indexPath.row].users)
+            self.userDefaults.set(self.blockDic, forKey: "block")
+            
+            
             self.dataSetArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-
-                     print("blockを実行")
-                    completionHandler(true)
-                }
+            completionHandler(true)
+            
+//            print("blockを実行")
+//            print(self.blockDic)
+//            print("blocklist")
+//            print(self.userDefaults.array(forKey: "block")!)
+            
+        }
         
         blockAction.backgroundColor = UIColor.red
         
         let swipeAction = UISwipeActionsConfiguration(actions:[blockAction])
-                swipeAction.performsFirstActionWithFullSwipe = false
+        swipeAction.performsFirstActionWithFullSwipe = false
         
         return swipeAction
     }
-   
+    
 
     
     

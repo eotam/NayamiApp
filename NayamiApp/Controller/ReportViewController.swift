@@ -6,13 +6,25 @@
 //
 
 import UIKit
+import WebKit
 
 class ReportViewController: UIViewController {
-
+    @IBOutlet weak var webView: WKWebView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        openURL("https://otoufucraft.wixsite.com/otoufucraft/%E3%81%94%E9%80%A3%E7%B5%A1")
 
         // Do any additional setup after loading the view.
+    }
+    
+    func openURL(_ string: String?){
+
+        let url = URL(string: string!)
+        let request = URLRequest(url: url!)
+        webView.load(request)
+
     }
     
 

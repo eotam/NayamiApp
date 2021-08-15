@@ -19,6 +19,7 @@ class DownLoad{
     let db = Firestore.firestore()
     var dataSetArray = [DataSet]()
     var done:Done?
+    var userDefaults = UserDefaults.standard
     
     //    ロード
     func load(tag:Int){
@@ -38,18 +39,23 @@ class DownLoad{
                     
                     let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
                     
-                   
-                    if UserDefaults.standard.string(forKey: "blockUser") != (data["users"] as! String){
-                    self.dataSetArray.append(dataSet)
-                    }
+                    let blockUsers = userDefaults.object(forKey: "block")
+
+                    print("download内")
+                    print(blockUsers ?? "nilでっせ")
+
+                    if (blockUsers! as AnyObject).contains(dataSet.users){
+                    
+                    }else{
+                        self.dataSetArray.append(dataSet)
                 }
-               
+                
                 self.done?.check(dataSetArray:self.dataSetArray)
             }
-//            print("download3")
-//            self.done?.check(dataSetArray:self.dataSetArray)
+
             
         }
     }
 }
 
+}

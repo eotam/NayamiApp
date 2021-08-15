@@ -19,7 +19,9 @@ class ViewController: UIViewController,NADViewDelegate {
     @IBOutlet weak var botton1: UIButton!
     @IBOutlet weak var botton2: UIButton!
     @IBOutlet weak var botton3: UIButton!
+    @IBOutlet weak var botton4: UIButton!
     @IBOutlet weak var nadView: NADView!
+    
     var animationView:AnimationView = AnimationView()
     
 //    画面がよばれた時
@@ -43,6 +45,14 @@ class ViewController: UIViewController,NADViewDelegate {
         nadView.delegate = self
         nadView.load()
         
+        
+        if Auth.auth().currentUser?.uid != nil{
+            
+        }else{
+            if UserDefaults.standard.object(forKey: "doui") == nil {
+                performSegue(withIdentifier: "kiyakuVC", sender: nil)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,29 +72,15 @@ class ViewController: UIViewController,NADViewDelegate {
                 self.view.addSubview(botton1)
                 self.view.addSubview(botton2)
                 self.view.addSubview(botton3)
-        
+                self.view.addSubview(botton4)
 //        kiyakuVCへ画面遷移
         
-        if Auth.auth().currentUser?.uid != nil{
-            
-        }else{
-            
-            performSegue(withIdentifier: "kiyakuVC", sender: nil)
-            
-            let alert = UIAlertController(title: "個人を特定するような投稿・誹謗中傷するような投稿はお控えください", message: "", preferredStyle: .alert)
-            let okAction: UIAlertAction =
-                UIAlertAction(title: "閉じる",style: UIAlertAction.Style.default,
-                              handler:{
-                                (action: UIAlertAction!) -> Void in
-                                print("閉じる")
-                                
-                              })
-            
-            alert.addAction(okAction)
-            present(alert, animated: true, completion: nil)
-            
-        
-        }
+//        if Auth.auth().currentUser?.uid != nil{
+//
+//        }else{
+//
+//            performSegue(withIdentifier: "kiyakuVC", sender: nil)
+//        }
         
     }
         
@@ -115,6 +111,14 @@ class ViewController: UIViewController,NADViewDelegate {
         let profileVC = storyboard?.instantiateViewController(identifier: "profile") as!ProfileViewController
         
         navigationController?.pushViewController(profileVC, animated: true)
+        
+    }
+    
+    @IBAction func reportBotton(_ sender: Any) {
+        
+        let ReportVC = storyboard?.instantiateViewController(identifier: "Report") as!ReportViewController
+        
+        navigationController?.pushViewController(ReportVC, animated: true)
         
     }
     

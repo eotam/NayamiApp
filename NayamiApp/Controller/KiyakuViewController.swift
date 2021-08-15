@@ -12,19 +12,17 @@ import Firebase
 class KiyakuViewController: UIViewController {
     @IBOutlet weak var webView: WKWebView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-      
-        openURL("https://otoufucraft.wixsite.com/otoufucraft/利用規約")
-
+       openURL("https://otoufucraft.wixsite.com/otoufucraft/%E5%88%A9%E7%94%A8%E8%A6%8F%E7%B4%84")
     }
     
+   
     func openURL(_ string: String?){
 
-        guard string != string else { return }
-        let url = URL(string: "https://otoufucraft.wixsite.com/otoufucraft/利用規約")!
-        let request = URLRequest(url: url)
+        let url = URL(string: string!)
+        let request = URLRequest(url: url!)
         webView.load(request)
 
     }
@@ -32,13 +30,17 @@ class KiyakuViewController: UIViewController {
     @IBAction func doui(_ sender: Any) {
         
         Auth.auth().signInAnonymously { (result, error) in
-            if(result?.user) != nil{
-            }
+            
+            
+            UserDefaults.standard.set(true, forKey: "doui")
+            let topVC = self.storyboard?.instantiateViewController(identifier: "top") as!ViewController
+            
+            self.navigationController?.pushViewController(topVC, animated: true)
     }
         
-        let topVC = storyboard?.instantiateViewController(identifier: "top") as!ViewController
-        
-        navigationController?.pushViewController(topVC, animated: true)
+//        let topVC = storyboard?.instantiateViewController(identifier: "top") as!ViewController
+//
+//        navigationController?.pushViewController(topVC, animated: true)
         
     }
     
