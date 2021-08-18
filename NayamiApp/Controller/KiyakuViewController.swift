@@ -11,7 +11,7 @@ import Firebase
 
 class KiyakuViewController: UIViewController {
     @IBOutlet weak var webView: WKWebView!
-    
+    var upLoadImage = UpLoadImage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +31,15 @@ class KiyakuViewController: UIViewController {
         
         Auth.auth().signInAnonymously { (result, error) in
             
+            UserDefaults.standard.setValue("匿名さん", forKey: "userName")
+            print("ユーザー名登録")
+//            let image = UIImage(named: "icon")!
+//            let data = image.jpegData(compressionQuality: 1.0)
+//            self.upLoadImage.sendProfileImageDate(data: data!)
+//            print("icon登録")
+             
+             
+
             
             UserDefaults.standard.set(true, forKey: "doui")
             let topVC = self.storyboard?.instantiateViewController(identifier: "top") as!ViewController

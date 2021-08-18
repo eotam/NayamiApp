@@ -13,7 +13,8 @@ import IQKeyboardManagerSwift
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+//    tuika
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -27,13 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         
 //        ログアウト処理
-//        let firebaseAuth = Auth.auth()
-//        do{
-//            try firebaseAuth.signOut()
-//        }catch let signOutError as NSError {
-//            print("Error signing out: %`", signOutError)
-//
-//        }
+        let firebaseAuth = Auth.auth()
+        do{
+            try firebaseAuth.signOut()
+        }catch let signOutError as NSError {
+            print("Error signing out: %`", signOutError)
+
+        }
         
         
         

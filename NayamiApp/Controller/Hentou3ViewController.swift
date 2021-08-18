@@ -28,8 +28,9 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
     var userImage = String()
     var idString = String()
     let db = Firestore.firestore()
-    
+    var blockArray = [String]()
     var tag = Int()
+    var userDefaults = UserDefaults.standard
     
     var commentSet:[CommentSet] = []
     
@@ -111,23 +112,45 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
             }
 
             if let snapShotDoc = snapShot?.documents{
-
+                
                 for doc in snapShotDoc{
-
+                    
                     let data = doc.data()
-
+                    
                     let commentSet = CommentSet(commentField: data["Comment"] as! String, imageString: data["userImage"] as! String, postDate: data["postDate"] as! Double, userName: data["userName"] as! String, users: data["Users"] as! String)
+                    
+                    if self.userDefaults.object(forKey: "block") == nil{
+                        print("ブロックユーザーはいません(コメント)")
+                        self.commentSet.append(commentSet)
+                        self.commentTable.reloadData()
 
-                    if UserDefaults.standard.string(forKey: "blockUser") != (data["Users"] as! String){
-                    self.commentSet.append(commentSet)
+                    }else{
+                        
+                        print("ブロックユーザーがいます（コメント）")
+                        let blockArray: [String] = self.userDefaults.object(forKey: "block")! as! [String]
+                        print("print(blockArray)")
+                        print(blockArray)
+                        
+                        let userID = String(describing: commentSet.users)
+                        
+                        print("userID(コメント)")
+                        print(userID)
+                        if blockArray.contains(userID){
+                            print("ブロックされたコメント")
+                        }else{
+                            print("ブロックされていないコメント")
+                            self.commentSet.append(commentSet)
+                            self.commentTable.reloadData()
+                        }
                     }
                 }
+                
+//                self.commentTable.reloadData()
             }
-
-            self.commentTable.reloadData()
+            
+            
         }
-
-
+        
     }
     
     
@@ -180,12 +203,61 @@ class Hentou3ViewController: UIViewController,UITableViewDataSource,UITableViewD
             let blockAction = UIContextualAction(style: .normal  , title: "ブロック") {
                         (ctxAction, view, completionHandler) in
                 
-                UserDefaults.standard.setValue(self.commentSet[indexPath.row].users, forKey: "blockUser")
-                self.commentSet.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+                if self.userDefaults.object(forKey: "block") == nil{
+                    
+                    print("(comment)ブロックユーザーなし")
+                    self.blockArray.append(String(describing: self.commentSet[indexPath.row].users))
+                    
+                    print("blockArrayの中身")
+                    print(self.blockArray)
+                    
+                    self.userDefaults.set(self.blockArray, forKey: "block")
+                    print("userDefaults（block）の中身")
+                    print(self.userDefaults.object(forKey: "block") as Any)
+                    
+                    
+                    self.commentSet.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                    completionHandler(true)
+                    
+                    print("ブロックユーザー生成")
+                    
+                }else{
+                    
+                    print("(comment)ブロックユーザーあり")
+                    
+                    var blockUsers: [String] = self.userDefaults.object(forKey: "block")! as! [String]
 
-                         print("blockを実行")
-                        completionHandler(true)
+                    self.blockArray.append(String(describing: self.commentSet[indexPath.row].users))
+                    
+                    blockUsers.append(contentsOf: self.blockArray)
+                    
+                    print("blockUsersの中身")
+                    print(blockUsers)
+                    
+                    self.userDefaults.set(blockUsers, forKey: "block")
+                    print("userDefaults（block）の中身")
+                    print(self.userDefaults.object(forKey: "block") as Any)
+                    
+                    
+                    self.commentSet.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                    completionHandler(true)
+                    
+                    print("ブロックユーザー追加完了")
+                    
+                    
+                }
+                
+                
+//                self.blockArray.append((String(describing: self.commentSet[indexPath.row].users)))
+//
+//                self.userDefaults.set(self.blockArray, forKey: "block")
+//
+//                self.commentSet.remove(at: indexPath.row)
+//                tableView.deleteRows(at: [indexPath], with: .automatic)
+
+                       
                     }
             
             blockAction.backgroundColor = UIColor.red

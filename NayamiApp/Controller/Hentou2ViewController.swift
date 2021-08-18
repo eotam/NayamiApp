@@ -23,7 +23,7 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
     
     var tag = Int()
     var dataSetArray = [DataSet]()
-    var blockDic = ["ブロックリスト"]
+    var blockArray = [String]()
     var userDefaults = UserDefaults.standard
 
     override func viewDidLoad() {
@@ -171,20 +171,64 @@ class Hentou2ViewController: UIViewController,Done,UITableViewDataSource,UITable
         let blockAction = UIContextualAction(style: .normal  , title: "ブロック") {
             (ctxAction, view, completionHandler) in
 
+            if self.userDefaults.object(forKey: "block") == nil{
+                
+                print("hentou2VCブロックユーザーなし")
+                self.blockArray.append(String(describing: self.dataSetArray[indexPath.row].users))
+                
+                print("blockArrayの中身")
+                print(self.blockArray)
+                
+                self.userDefaults.set(self.blockArray, forKey: "block")
+                print("userDefaults（block）の中身")
+                print(self.userDefaults.object(forKey: "block") as Any)
+                
+                
+                self.dataSetArray.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                completionHandler(true)
+                
+                print("ブロックユーザー生成")
+                
+            }else{
+                print("hentou2VCブロックユーザーあり")
+                
+                var blockUsers: [String] = self.userDefaults.object(forKey: "block")! as! [String]
+
+                self.blockArray.append(String(describing: self.dataSetArray[indexPath.row].users))
+                
+                blockUsers.append(contentsOf: self.blockArray)
+                
+                print("blockUsersの中身")
+                print(blockUsers)
+                
+                self.userDefaults.set(blockUsers, forKey: "block")
+                print("userDefaults（block）の中身")
+                print(self.userDefaults.object(forKey: "block") as Any)
+                
+                
+                self.dataSetArray.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                completionHandler(true)
+                
+                print("ブロックユーザー追加完了")
+                
+            }
             
-            self.blockDic.append(self.dataSetArray[indexPath.row].users)
-            self.userDefaults.set(self.blockDic, forKey: "block")
-            
-            
-            self.dataSetArray.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            completionHandler(true)
-            
-//            print("blockを実行")
-//            print(self.blockDic)
-//            print("blocklist")
-//            print(self.userDefaults.array(forKey: "block")!)
-            
+//            self.blockArray.append(String(describing: self.dataSetArray[indexPath.row].users))
+//
+//            print("blockArrayの中身")
+//            print(self.blockArray)
+//
+//            self.userDefaults.set(self.blockArray, forKey: "block")
+//            print("userDefaults（block）の中身")
+//            print(self.userDefaults.object(forKey: "block") as Any)
+//
+//
+//            self.dataSetArray.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .automatic)
+//            completionHandler(true)
+    
         }
         
         blockAction.backgroundColor = UIColor.red

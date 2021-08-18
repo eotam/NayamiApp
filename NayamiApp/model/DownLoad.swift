@@ -20,7 +20,6 @@ class DownLoad{
     var dataSetArray = [DataSet]()
     var done:Done?
     var userDefaults = UserDefaults.standard
-    
     //    ロード
     func load(tag:Int){
         
@@ -39,16 +38,33 @@ class DownLoad{
                     
                     let dataSet = DataSet(title: data["title"] as! String, textView: data["textView"] as! String, category: data["category"] as! String,imageString: data["imageString"] as! String, postDate: data["postDate"] as! Double,userName: data["userName"] as! String, docID: doc.documentID, users: data["users"] as! String)
                     
-                    let blockUsers = userDefaults.object(forKey: "block")
-
-                    print("download内")
-                    print(blockUsers ?? "nilでっせ")
-
-                    if (blockUsers! as AnyObject).contains(dataSet.users){
+                    print("userDefaultsの中身（ダウンロード）")
+                    print(userDefaults.object(forKey: "block") as Any)
                     
-                    }else{
+                    if userDefaults.object(forKey: "block") == nil{
+                        print("ブロックユーザーはいません")
                         self.dataSetArray.append(dataSet)
-                }
+
+                        
+                    }else{
+                        print("ブロックユーザーがいます")
+                        let blockArray: [String] = userDefaults.object(forKey: "block")! as! [String]
+                        print("print(blockArray)")
+                        print(blockArray)
+                        
+                        
+                        let userID = String(describing: dataSet.users)
+                        print("userID(download.swift)")
+                        print(userID)
+                        if blockArray.contains(userID){
+                            print("ブロックされた投稿")
+                        }else{
+                            print("ブロックされていない投稿")
+                            self.dataSetArray.append(dataSet)
+                    }
+                        
+                    }
+                  
                 
                 self.done?.check(dataSetArray:self.dataSetArray)
             }
